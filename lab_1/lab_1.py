@@ -1,14 +1,15 @@
-import pyttsx3
 import datetime
-import speech_recognition as sr
-import wikipedia
+import os
 import smtplib
 import webbrowser as wb
-import os
+
 import pyautogui
 import psutil
 import pyjokes
+import pyttsx3
 import requests
+import speech_recognition as sr
+import wikipedia
 
 engine = pyttsx3.init()
 engine.setProperty('rate', 180)
