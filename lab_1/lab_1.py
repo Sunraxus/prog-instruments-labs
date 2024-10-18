@@ -12,11 +12,23 @@ import speech_recognition as sr
 import wikipedia
 
 
+SMTP_SERVER = 'smtp.gmail.com'
+SMTP_PORT = 587
+EMAIL_ADDRESS = "user-name@xyz.com"
+EMAIL_PASSWORD = "pwd"
+SCREENSHOT_PATH = "C:\\Users\\226898\\Pictures\\Screenshots\\ss.png"
+MUSIC_DIR = "C://Music"
+WEATHER_API_KEY = "2b840a555ccef7ae830adfe3ba2c2ac2"
+WEATHER_BASE_URL = "http://api.openweathermap.org/data/2.5/weather?"
+VOICE_RATE = 180
+MAX_VOLUME = 10
+KELVIN_TO_CELSIUS_OFFSET = 273.15
+
 engine = pyttsx3.init()
-engine.setProperty('rate', 180)
+engine.setProperty('rate', VOICE_RATE)
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[0].id)
-engine.setProperty('volume', 10)
+engine.setProperty('volume', MAX_VOLUME)
 
 
 def voice_change(voice_index) -> None:
@@ -135,20 +147,18 @@ def take_command() -> str:
 
 def send_email(to, content) -> None:
     """Send an email to the specified address with the given content."""
-    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
     server.ehlo()
     server.starttls()
-    server.login("user-name@xyz.com", "pwd")
-    server.sendmail("user-name@xyz.com", to, content)
+    server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+    server.sendmail(EMAIL_ADDRESS, to, content)
     server.close()
 
 
 def take_screenshot() -> None:
     """Capture a screenshot and save it to the specified location."""
     screenshot_image = pyautogui.screenshot()
-    screenshot_image.save(
-        "C:\\Users\\226898\\Pictures\\Screenshots\\ss.png"
-    )
+    screenshot_image.save(SCREENSHOT_PATH)
 
 
 def get_cpu() -> None:
@@ -172,29 +182,29 @@ def get_cpu() -> None:
 
 def tell_jokes() -> None:
     """Tell a joke to the user."""
-    j = pyjokes.get_joke()
-    print(j)
-    speak(j)
+    joke = pyjokes.get_joke()
+    print(joke)
+    speak(joke)
     speak("was it a good joke, sir?")
 
 
 def get_weather() -> None:
     """Get the weather information for a specified city and speak it."""
-    api_key = "2b840a555ccef7ae830adfe3ba2c2ac2"
-    base_url = "http://api.openweathermap.org/data/2.5/weather?"
     speak("Of which city would you like to know the weather sir?")
     city_name = take_command()
-    weather_api_url = base_url + "appid=" + api_key + "&q=" + city_name
+    weather_api_url = (WEATHER_BASE_URL + "appid=" + WEATHER_API_KEY +
+                       "&q=" + city_name)
     response = requests.get(weather_api_url)
     response_data = response.json()
     if response_data["cod"] != "404":
         weather_data = response_data["main"]
         current_temperature = weather_data["temp"]
+        current_temp_celsius = current_temperature - KELVIN_TO_CELSIUS_OFFSET
         current_pressure = weather_data["pressure"]
         current_humidiy = weather_data["humidity"]
         weather_condition = response_data["weather"][0]["description"]
         weather_report = ("in " + city_name + "Current Temperature is " +
-             str(int(current_temperature - 273.15)) + " degree celsius " +
+             str(int(current_temp_celsius)) + " degree celsius " +
              ", with atmospheric pressure of " + str(current_pressure) + 
              " hpa unit" + ", and humidity is  " + str(current_humidiy) + 
              " percent" " and " + str(weather_condition))
@@ -271,8 +281,7 @@ if __name__ == "__main__":
             try:
                 speak("What is the message for the email")
                 content = take_command()
-                to = 'reciever@xyz.com'
-                send_email(to, content)
+                send_email(EMAIL_ADDRESS, content)
                 speak("sir, your Email has been sent")
             except Exception as e:
                 print(e)
@@ -295,9 +304,8 @@ if __name__ == "__main__":
 
         elif ("play songs" in query):
             speak("Alright...")
-            songs_dir = "C://Music"
-            songs = os.listdir(songs_dir)
-            os.startfile(os.path.join(songs_dir, songs[1]))
+            songs = os.listdir(MUSIC_DIR)
+            os.startfile(os.path.join(MUSIC_DIR, songs[1]))
             quit()
 
         elif ("create a reminder list" in query or "reminder" in query):
