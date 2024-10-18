@@ -11,13 +11,12 @@ import requests
 import speech_recognition as sr
 import wikipedia
 
+
 engine = pyttsx3.init()
 engine.setProperty('rate', 180)
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[0].id)
 engine.setProperty('volume', 10)
-
-# change voice
 
 
 def voice_change(v):
@@ -25,22 +24,16 @@ def voice_change(v):
     engine.setProperty('voice', voices[x].id)
     speak("Voice has been changed sir")
 
-# speak function
-
 
 def speak(audio):
     engine.say(audio)
     engine.runAndWait()
-
-# time function
 
 
 def time():
     Time = datetime.datetime.now().strftime("%H:%M:%S")
     speak("sir, right now time is ")
     speak(Time)
-
-# date function
 
 
 def date():
@@ -80,8 +73,6 @@ def checktime(tt):
     else:
         speak("it's night sir!, you should probably get some sleep")
 
-# welcome function
-
 
 def wishme():
     speak("Welcome Back sir")
@@ -113,8 +104,6 @@ def wishme_end():
         speak("Goodnight.. Get some sleep sir! We got a lot to do tomorrow.")
     quit()
 
-# command by user function
-
 
 def takeCommand():
     r = sr.Recognizer()
@@ -138,8 +127,6 @@ def takeCommand():
 
     return query
 
-# sending email function
-
 
 def sendEmail(to, content):
     server = smtplib.SMTP('smtp.gmail.com', 587)
@@ -149,16 +136,12 @@ def sendEmail(to, content):
     server.sendmail("user-name@xyz.com", to, content)
     server.close()
 
-# screenshot function
-
 
 def screenshot():
     img = pyautogui.screenshot()
     img.save(
         "C:\\Users\\226898\\Pictures\\Screenshots\\ss.png"
     )
-
-# battery and cpu usage
 
 
 def cpu():
@@ -178,16 +161,12 @@ def cpu():
           " battery power, sir. always provide regular power supply to the"\
           "system")
 
-# joke function
-
 
 def jokes():
     j = pyjokes.get_joke()
     print(j)
     speak(j)
     speak("was it a good joke, sir?")
-
-# weather condition
 
 
 def weather():
@@ -242,17 +221,12 @@ if __name__ == "__main__":
     while (True):
         query = takeCommand().lower()
 
-        # time
-
         if ('time' in query):
             time()
-
-# date
 
         elif ('date' in query):
             date()
 
-# personal info
         elif ("tell me about yourself" in query):
             personal()
         elif ("about you" in query):
@@ -268,8 +242,6 @@ if __name__ == "__main__":
             res = open("about.txt", 'r')
             speak("here is the details: " + res.read())
 
-# searching on wikipedia
-
         elif ('wikipedia' in query or 'what' in query or 'who' in query
               or 'when' in query or 'where' in query):
             speak("searching...")
@@ -284,8 +256,6 @@ if __name__ == "__main__":
             print(query)
             print(result)
             speak(result)
-
-# sending email
 
         elif ("send email" in query):
             try:
@@ -306,8 +276,6 @@ if __name__ == "__main__":
             search = takeCommand().lower()
             wb.get(chromepath).open_new_tab(search + '.com')
 
-# sysytem logout/ shut down etc
-
         elif ("logout" in query):
             os.system("shutdown -1")
         elif ("restart" in query):
@@ -315,16 +283,12 @@ if __name__ == "__main__":
         elif ("shut down" in query):
             os.system("shutdown /r /t 1")
 
-# play songs
-
         elif ("play songs" in query):
             speak("Alright...")
             songs_dir = "C://Music"
             songs = os.listdir(songs_dir)
             os.startfile(os.path.join(songs_dir, songs[1]))
             quit()
-
-# reminder function
 
         elif ("create a reminder list" in query or "reminder" in query):
             speak("What would you like me to remind you of sir?")
@@ -335,32 +299,25 @@ if __name__ == "__main__":
             reminder_file.write(data)
             reminder_file.close()
 
-# reading reminder list
-
         elif ("do you know anything" in query or "remember" in query):
             reminder_file = open("data.txt", 'r')
             speak("sir you told me to remind you of " + reminder_file.read())
 
-# screenshot
         elif ("screenshot" in query):
             screenshot()
             speak("i have captured and saved, what was on your screen sir"\
                   "right now")
 
-# cpu and battery usage
         elif ("cpu and battery" in query or "battery" in query
               or "cpu" in query):
             cpu()
 
-# jokes
         elif ("tell me a joke" in query or "joke" in query):
             jokes()
 
-# weather
         elif ("weather" in query or "temperature" in query):
             weather()
 
-# jarvis features
         elif ("tell me your features" in query or "powers" in query
              or "features" in query):
             features = (
@@ -397,7 +354,6 @@ if __name__ == "__main__":
             else:
                 speak("what can i do for you sir?")
 
-# changing voice
         elif ("voice" in query):
             speak("if you want to change my voice to female or male, just"\
                   "say female, or, male, and i will change my voice for you")
@@ -412,8 +368,6 @@ if __name__ == "__main__":
             elif ("male" in query):
                 voice_change(0)
 
-# exit function
-
         elif ('i am done cypher' in query or 
               'bye cypher' in query or 
               'go offline cypher' in query or 
@@ -425,3 +379,4 @@ if __name__ == "__main__":
               'thank you cypher you can go to sleep' in query or 
               'ok enough for today cypher, go to sleep' in query):
             wishme_end()
+ 
