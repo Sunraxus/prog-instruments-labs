@@ -19,23 +19,27 @@ engine.setProperty('voice', voices[0].id)
 engine.setProperty('volume', 10)
 
 
-def voice_change(voice_index):
+def voice_change(voice_index) -> None:
+    """Change the voice of the text-to-speech engine."""
     engine.setProperty('voice', voices[voice_index].id)
     speak("Voice has been changed sir")
 
 
-def speak(audio):
+def speak(audio) -> None:
+    """Speak the given audio string."""
     engine.say(audio)
     engine.runAndWait()
 
 
-def get_time():
+def get_time() -> None:
+    """Get and speak the current time."""
     current_time = datetime.datetime.now().strftime("%H:%M:%S")
     speak("sir, right now time is ")
     speak(current_time)
 
 
-def get_date():
+def get_date() -> None:
+    """Get and speak the current date."""
     current_year = int(datetime.datetime.now().year)
     current_month = int(datetime.datetime.now().month)
     current_date = int(datetime.datetime.now().day)
@@ -45,7 +49,8 @@ def get_date():
     speak(current_year)
 
 
-def check_time(time_of_day):
+def check_time(time_of_day) -> None:
+    """Check the time of day and greet accordingly."""
     hour = datetime.datetime.now().hour
     if ("morning" in time_of_day):
         if (hour >= 6 and hour < 12):
@@ -73,7 +78,8 @@ def check_time(time_of_day):
         speak("it's night sir!, you should probably get some sleep")
 
 
-def wish_me():
+def wish_me() -> None:
+    """Greet the user and acknowledge that the assistant is online."""
     speak("Welcome Back sir")
     hour = datetime.datetime.now().hour
     if (hour >= 6 and hour < 12):
@@ -89,7 +95,8 @@ def wish_me():
           "i help you today?")
 
 
-def wish_me_end():
+def wish_me_end() -> None:
+    """Greet the user and shut down the assistant."""
     speak("alright i am going to sleep now sir, wake me up if you need"\
           "anything")
     hour = datetime.datetime.now().hour
@@ -104,7 +111,8 @@ def wish_me_end():
     quit()
 
 
-def take_command():
+def take_command() -> str:
+    """Listen to the user's command and return it as a string."""
     recognizer = sr.Recognizer()
     with sr.Microphone() as source:
         print("Listening...")
@@ -125,7 +133,8 @@ def take_command():
     return user_command
 
 
-def send_email(to, content):
+def send_email(to, content) -> None:
+    """Send an email to the specified address with the given content."""
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.ehlo()
     server.starttls()
@@ -134,14 +143,16 @@ def send_email(to, content):
     server.close()
 
 
-def take_screenshot():
+def take_screenshot() -> None:
+    """Capture a screenshot and save it to the specified location."""
     screenshot_image = pyautogui.screenshot()
     screenshot_image.save(
         "C:\\Users\\226898\\Pictures\\Screenshots\\ss.png"
     )
 
 
-def get_cpu():
+def get_cpu() -> None:
+    """Get and speak the current CPU usage and battery status."""
     usage = str(psutil.cpu_percent())
     speak('current CPU status of your system is ' + usage +
           "sir, dont let too many unnecessary background processes run at"\
@@ -159,14 +170,16 @@ def get_cpu():
           "system")
 
 
-def tell_jokes():
+def tell_jokes() -> None:
+    """Tell a joke to the user."""
     j = pyjokes.get_joke()
     print(j)
     speak(j)
     speak("was it a good joke, sir?")
 
 
-def get_weather():
+def get_weather() -> None:
+    """Get the weather information for a specified city and speak it."""
     api_key = "2b840a555ccef7ae830adfe3ba2c2ac2"
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
     speak("Of which city would you like to know the weather sir?")
@@ -192,7 +205,8 @@ def get_weather():
               "sir")
 
 
-def tell_about_self():
+def tell_about_self() -> None:
+    """Provide information about the assistant."""
     speak(
         " Hello, I am Cypher, version 1.8.7, I am a basic design of voice"\
         "assistant, a program without any form or physical presence, i only"\
