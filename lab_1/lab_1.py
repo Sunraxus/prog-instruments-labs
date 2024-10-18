@@ -19,9 +19,8 @@ engine.setProperty('voice', voices[0].id)
 engine.setProperty('volume', 10)
 
 
-def voice_change(v):
-    x = int(v)
-    engine.setProperty('voice', voices[x].id)
+def voice_change(voice_index):
+    engine.setProperty('voice', voices[voice_index].id)
     speak("Voice has been changed sir")
 
 
@@ -30,25 +29,25 @@ def speak(audio):
     engine.runAndWait()
 
 
-def time():
-    Time = datetime.datetime.now().strftime("%H:%M:%S")
+def get_time():
+    current_time = datetime.datetime.now().strftime("%H:%M:%S")
     speak("sir, right now time is ")
-    speak(Time)
+    speak(current_time)
 
 
-def date():
-    year = int(datetime.datetime.now().year)
-    month = int(datetime.datetime.now().month)
-    date = int(datetime.datetime.now().day)
+def get_date():
+    current_year = int(datetime.datetime.now().year)
+    current_month = int(datetime.datetime.now().month)
+    current_date = int(datetime.datetime.now().day)
     speak("sir, Today is")
-    speak(date)
-    speak(month)
-    speak(year)
+    speak(current_date)
+    speak(current_month)
+    speak(current_year)
 
 
-def checktime(tt):
+def check_time(time_of_day):
     hour = datetime.datetime.now().hour
-    if ("morning" in tt):
+    if ("morning" in time_of_day):
         if (hour >= 6 and hour < 12):
             speak("Good morning sir, how are you feeling this morning?")
         else:
@@ -58,7 +57,7 @@ def checktime(tt):
                 speak("it's Good Evening sir")
             else:
                 speak("it's Goodnight sir")
-    elif ("afternoon" in tt):
+    elif ("afternoon" in time_of_day):
         if (hour >= 12 and hour < 18):
             speak("it's Good afternoon sir")
         else:
@@ -74,7 +73,7 @@ def checktime(tt):
         speak("it's night sir!, you should probably get some sleep")
 
 
-def wishme():
+def wish_me():
     speak("Welcome Back sir")
     hour = datetime.datetime.now().hour
     if (hour >= 6 and hour < 12):
@@ -90,7 +89,7 @@ def wishme():
           "i help you today?")
 
 
-def wishme_end():
+def wish_me_end():
     speak("alright i am going to sleep now sir, wake me up if you need"\
           "anything")
     hour = datetime.datetime.now().hour
@@ -105,19 +104,17 @@ def wishme_end():
     quit()
 
 
-def takeCommand():
-    r = sr.Recognizer()
+def take_command():
+    recognizer = sr.Recognizer()
     with sr.Microphone() as source:
         print("Listening...")
-        r.pause_threshold = 0.5
-        audio = r.listen(source)
+        recognizer.pause_threshold = 0.5
+        audio = recognizer.listen(source)
 
     try:
         print("Recognizing...")
         speak("vocal authorization complete, identity confirmed")
-        query = r.recognize_google(audio, language='en-in')
-        # speak(query)
-        # print(query)
+        user_command = recognizer.recognize_google(audio, language='en-in')
     except Exception as e:
         print(e)
         speak("sir, i am having difficulty hearing you, can you please speak"\
@@ -125,10 +122,10 @@ def takeCommand():
 
         return "None"
 
-    return query
+    return user_command
 
 
-def sendEmail(to, content):
+def send_email(to, content):
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.ehlo()
     server.starttls()
@@ -137,14 +134,14 @@ def sendEmail(to, content):
     server.close()
 
 
-def screenshot():
-    img = pyautogui.screenshot()
-    img.save(
+def take_screenshot():
+    screenshot_image = pyautogui.screenshot()
+    screenshot_image.save(
         "C:\\Users\\226898\\Pictures\\Screenshots\\ss.png"
     )
 
 
-def cpu():
+def get_cpu():
     usage = str(psutil.cpu_percent())
     speak('current CPU status of your system is ' + usage +
           "sir, dont let too many unnecessary background processes run at"\
@@ -162,41 +159,40 @@ def cpu():
           "system")
 
 
-def jokes():
+def tell_jokes():
     j = pyjokes.get_joke()
     print(j)
     speak(j)
     speak("was it a good joke, sir?")
 
 
-def weather():
+def get_weather():
     api_key = "2b840a555ccef7ae830adfe3ba2c2ac2"
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
     speak("Of which city would you like to know the weather sir?")
-    city_name = takeCommand()
-    complete_url = base_url + "appid=" + api_key + "&q=" + city_name
-    response = requests.get(complete_url)
-    x = response.json()
-    if x["cod"] != "404":
-        y = x["main"]
-        current_temperature = y["temp"]
-        current_pressure = y["pressure"]
-        current_humidiy = y["humidity"]
-        z = x["weather"]
-        weather_description = z[0]["description"]
-        r = ("in " + city_name + "Current Temperature is " +
+    city_name = take_command()
+    weather_api_url = base_url + "appid=" + api_key + "&q=" + city_name
+    response = requests.get(weather_api_url)
+    response_data = response.json()
+    if response_data["cod"] != "404":
+        weather_data = response_data["main"]
+        current_temperature = weather_data["temp"]
+        current_pressure = weather_data["pressure"]
+        current_humidiy = weather_data["humidity"]
+        weather_condition = response_data["weather"][0]["description"]
+        weather_report = ("in " + city_name + "Current Temperature is " +
              str(int(current_temperature - 273.15)) + " degree celsius " +
              ", with atmospheric pressure of " + str(current_pressure) + 
              " hpa unit" + ", and humidity is  " + str(current_humidiy) + 
-             " percent" " and " + str(weather_description))
-        print(r)
-        speak(r)
+             " percent" " and " + str(weather_condition))
+        print(weather_report)
+        speak(weather_report)
     else:
         speak(" the city you are refering to, was not Found in our database"\
               "sir")
 
 
-def personal():
+def tell_about_self():
     speak(
         " Hello, I am Cypher, version 1.8.7, I am a basic design of voice"\
         "assistant, a program without any form or physical presence, i only"\
@@ -217,24 +213,24 @@ def personal():
 
 
 if __name__ == "__main__":
-    wishme()
+    wish_me()
     while (True):
-        query = takeCommand().lower()
+        query = take_command().lower()
 
         if ('time' in query):
-            time()
+            get_time()
 
         elif ('date' in query):
-            date()
+            get_date()
 
         elif ("tell me about yourself" in query):
-            personal()
+            tell_about_self()
         elif ("about you" in query):
-            personal()
+            tell_about_self()
         elif ("who are you" in query):
-            personal()
+            tell_about_self()
         elif ("yourself" in query):
-            personal()
+            tell_about_self()
 
         elif ("developer" in query or "tell me about your developer" in query
               or "father" in query or "who develop you" in query
@@ -260,9 +256,9 @@ if __name__ == "__main__":
         elif ("send email" in query):
             try:
                 speak("What is the message for the email")
-                content = takeCommand()
+                content = take_command()
                 to = 'reciever@xyz.com'
-                sendEmail(to, content)
+                send_email(to, content)
                 speak("sir, your Email has been sent")
             except Exception as e:
                 print(e)
@@ -273,7 +269,7 @@ if __name__ == "__main__":
             speak("What would you like me to search on the web, sir?")
             chromepath = ('C:/ProgramData/Microsoft/Windows/Start Menu/'
                           'Programs/chrome.exe %s')
-            search = takeCommand().lower()
+            search = take_command().lower()
             wb.get(chromepath).open_new_tab(search + '.com')
 
         elif ("logout" in query):
@@ -292,7 +288,7 @@ if __name__ == "__main__":
 
         elif ("create a reminder list" in query or "reminder" in query):
             speak("What would you like me to remind you of sir?")
-            data = takeCommand()
+            data = take_command()
             speak("sir You told me to remind you of" + data)
             reminder_file = open("data.txt", 'a')
             reminder_file.write('\n')
@@ -304,19 +300,19 @@ if __name__ == "__main__":
             speak("sir you told me to remind you of " + reminder_file.read())
 
         elif ("screenshot" in query):
-            screenshot()
+            take_screenshot()
             speak("i have captured and saved, what was on your screen sir"\
                   "right now")
 
         elif ("cpu and battery" in query or "battery" in query
               or "cpu" in query):
-            cpu()
+            get_cpu()
 
         elif ("tell me a joke" in query or "joke" in query):
-            jokes()
+            tell_jokes()
 
         elif ("weather" in query or "temperature" in query):
-            weather()
+            get_weather()
 
         elif ("tell me your features" in query or "powers" in query
              or "features" in query):
@@ -350,14 +346,14 @@ if __name__ == "__main__":
             query = query.replace("hello", "")
             if ("morning" in query or "night" in query or "goodnight" in query
                     or "afternoon" in query or "noon" in query):
-                checktime(query)
+                check_time(query)
             else:
                 speak("what can i do for you sir?")
 
         elif ("voice" in query):
             speak("if you want to change my voice to female or male, just"\
                   "say female, or, male, and i will change my voice for you")
-            q = takeCommand()
+            q = take_command()
             if ("female" in q):
                 voice_change(1)
             elif ("male" in q):
@@ -378,5 +374,5 @@ if __name__ == "__main__":
               'shut down cypher' in query or 
               'thank you cypher you can go to sleep' in query or 
               'ok enough for today cypher, go to sleep' in query):
-            wishme_end()
+            wish_me_end()
  
