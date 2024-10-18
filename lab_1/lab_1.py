@@ -74,7 +74,9 @@ def checktime(tt):
             elif (hour >= 18 and hour < 24):
                 speak("it's Good Evening sir")
             else:
-                speak("it's Goodnight sir, dont go to bed, late, sir it affects your daily sleep cycle, causing daily mood swings, with stress and anxiety")
+                speak("it's Goodnight sir, dont go to bed, late, sir it"\
+                      "affects your daily sleep cycle, causing daily"\
+                      "mood swings, with stress and anxiety")
     else:
         speak("it's night sir!, you should probably get some sleep")
 
@@ -93,11 +95,13 @@ def wishme():
     else:
         speak("Goodnight sir")
 
-    speak("I have indeed been uploaded , i am online and ready sir, How can i help you today?")
+    speak("I have indeed been uploaded , i am online and ready sir, How can"\
+          "i help you today?")
 
 
 def wishme_end():
-    speak("alright i am going to sleep now sir, wake me up if you need anything")
+    speak("alright i am going to sleep now sir, wake me up if you need"\
+          "anything")
     hour = datetime.datetime.now().hour
     if (hour >= 6 and hour < 12):
         speak("Good Morning")
@@ -127,7 +131,8 @@ def takeCommand():
         # print(query)
     except Exception as e:
         print(e)
-        speak("sir, i am having difficulty hearing you, can you please speak up?...")
+        speak("sir, i am having difficulty hearing you, can you please speak"\
+              "up?...")
 
         return "None"
 
@@ -159,14 +164,19 @@ def screenshot():
 def cpu():
     usage = str(psutil.cpu_percent())
     speak('current CPU status of your system is ' + usage +
-          "sir, dont let too many unnecessary background processes run at the same time, for the system to perform operation smoothly, and you can work efficiently on this system")
+          "sir, dont let too many unnecessary background processes run at"\
+          "the same time, for the system to perform operation smoothly, and"\
+          "you can work efficiently on this system")
     print('current CPU status of your system is ' + usage +
-          "sir, dont let too many unnecessary background processes run at the same time, for the system to perform operation smoothly, and you can work efficiently on this system")
+          "sir, dont let too many unnecessary background processes run at"\
+          "the same time, for the system to perform operation smoothly, and"\
+          "you can work efficiently on this system")
     battery = psutil.sensors_battery()
     speak("Your battery usage currently is at")
     speak(battery.percent)
     print("Your system is running at:" + str(battery.percent) +
-          " battery power, sir. always provide regular power supply to the system")
+          " battery power, sir. always provide regular power supply to the"\
+          "system")
 
 # joke function
 
@@ -197,20 +207,34 @@ def weather():
         weather_description = z[0]["description"]
         r = ("in " + city_name + "Current Temperature is " +
              str(int(current_temperature - 273.15)) + " degree celsius " +
-             ", with atmospheric pressure of " + str(current_pressure) + " hpa unit" +
-             ", and humidity is  " + str(current_humidiy) + " percent"
-             " and " + str(weather_description))
+             ", with atmospheric pressure of " + str(current_pressure) + 
+             " hpa unit" + ", and humidity is  " + str(current_humidiy) + 
+             " percent" " and " + str(weather_description))
         print(r)
         speak(r)
     else:
-        speak(" the city you are refering to, was not Found in our database sir")
+        speak(" the city you are refering to, was not Found in our database"\
+              "sir")
 
 
 def personal():
     speak(
-        " Hello, I am Cypher, version 1.8.7, I am a basic design of voice assistant, a program without any form or physical presence, i only exist in the lines of code, I was designed and developed, on 19 September 2022, by using a programming language called python with the help of many imported modules, on a device named Dell Inspiron 15, with microsoft windows 64 bit operating system, consisting of 8 Giga bytes of Random access memory, intel core i 5 tenth generation processor, 4 gigabytes n vidia m x two thirty of graphics memory, and 2 gigabytes of intel integrated graphics, i have a network database running in background for your service at all time, as you can ask me anything, anytime, i will provide you with the information you are looking for."
+        " Hello, I am Cypher, version 1.8.7, I am a basic design of voice"\
+        "assistant, a program without any form or physical presence, i only"\
+        "exist in the lines of code, I was designed and developed, on 19"\
+        "September 2022, by using a programming language called python with"\
+        "the help of many imported modules, on a device named Dell Inspiron"\
+        "15, with microsoft windows 64 bit operating system, consisting of"\
+        "8 Giga bytes of Random access memory, intel core i 5 tenth"\
+        "generation processor, 4 gigabytes n vidia m x two thirty of"\
+        "graphics memory, and 2 gigabytes of intel integrated graphics, i"\
+        "have a network database running in background for your service at"\
+        "all time, as you can ask me anything, anytime, i will provide you"\
+        "with the information you are looking for."
     )
-    speak("Now i hope you know me well, i hope i will be of some help to you in the future. Just take my name and i will be powered up and ready for you sir")
+    speak("Now i hope you know me well, i hope i will be of some help to you"\
+          "in the future. Just take my name and i will be powered up and"\
+          "ready for you sir")
 
 
 if __name__ == "__main__":
@@ -273,10 +297,12 @@ if __name__ == "__main__":
             except Exception as e:
                 print(e)
                 speak(
-                    "Unable to send email sir, check whether the address of the recipient is correct")
+                    "Unable to send email sir, check whether the address of"\
+                    "the recipient is correct")
         elif ("search on google" in query or "open website" in query):
             speak("What would you like me to search on the web, sir?")
-            chromepath = 'C:/ProgramData/Microsoft/Windows/Start Menu/Programs/chrome.exe %s'
+            chromepath = ('C:/ProgramData/Microsoft/Windows/Start Menu/'
+                          'Programs/chrome.exe %s')
             search = takeCommand().lower()
             wb.get(chromepath).open_new_tab(search + '.com')
 
@@ -318,7 +344,8 @@ if __name__ == "__main__":
 # screenshot
         elif ("screenshot" in query):
             screenshot()
-            speak("i have captured and saved, what was on your screen sir right now")
+            speak("i have captured and saved, what was on your screen sir"\
+                  "right now")
 
 # cpu and battery usage
         elif ("cpu and battery" in query or "battery" in query
@@ -335,22 +362,26 @@ if __name__ == "__main__":
 
 # jarvis features
         elif ("tell me your features" in query or "powers" in query
-              or "features" in query):
-            features = ''' i can help to do lot many things like..
-            telling you current time and date,
-            i can provide you with current weather updates of a city, across the globe,
-            and also the current power and control processing unit usage of the system that i am currently working on,
-            i can create a reminders for you, so you dont miss any important tasks or meetings and social gatherings that you might have to attend int hte future,
-            i can aslo capture the work on your screen and save it for you if you tell me, sir,
-            i can light up your mood by cracking unfunny jokes,i am not sure if you will laugh though,
-            if you want to send and email to someone like your boss, family or your friend, and you are busy at the moment, you can tell me, and i will do it for you sir,
-            i can even shut down the system for you, or logout or hibernate and put your system to sleep,
-            if you want to open a webiste i can do it for you,
-            i can search the things on wikipedia for your knowledge,
-            if you dont like my voice, you can change it at any moment, from male to female and vice-versa,
-            And yes one more thing sir, My boss is working on this system to add more features...,
-            mow tell me what can i do for you??
-            '''
+             or "features" in query):
+            features = (
+            "I can help you with many things, such as:\n"
+            "- Telling you the current time and date.\n"
+            "- Providing weather updates for any city across the globe.\n"
+            "- Showing the current CPU and battery usage.\n"
+            "- Creating reminders, so you don't miss important tasks, "
+            "meetings, or events.\n"
+            "- Capturing and saving a screenshot of your screen.\n"
+            "- Lightening your mood with a joke, although I can't guarantee "
+            "you'll laugh.\n"
+            "- Sending emails for you to your boss, family, or friends "
+            "while you're busy.\n"
+            "- Shutting down, logging out, or putting your system to sleep.\n"
+            "- Opening websites for you.\n"
+            "- Searching information on Wikipedia.\n"
+            "- Changing my voice from male to female and vice versa.\n"
+            "- My developer is working on adding more features.\n"
+            "Now tell me, what can I do for you?"
+            )
             print(features)
             speak(features)
 
@@ -368,7 +399,8 @@ if __name__ == "__main__":
 
 # changing voice
         elif ("voice" in query):
-            speak("if you want to change my voice to female or male, just say female, or, male, and i will change my voice for you")
+            speak("if you want to change my voice to female or male, just"\
+                  "say female, or, male, and i will change my voice for you")
             q = takeCommand()
             if ("female" in q):
                 voice_change(1)
@@ -382,8 +414,14 @@ if __name__ == "__main__":
 
 # exit function
 
-        elif ('i am done cypher' in query or 'bye cypher' in query
-              or 'go offline cypher' in query or 'bye' in query
-              or 'nothing' in query or 'go to sleep cypher' in query or 'sleep cypher' in query
-              or 'shut down cypher' or 'thank you cypher you can got to sleep' in query or 'ok enough for today cypher, go to sleep' in query):
+        elif ('i am done cypher' in query or 
+              'bye cypher' in query or 
+              'go offline cypher' in query or 
+              'bye' in query or 
+              'nothing' in query or 
+              'go to sleep cypher' in query or 
+              'sleep cypher' in query or 
+              'shut down cypher' in query or 
+              'thank you cypher you can go to sleep' in query or 
+              'ok enough for today cypher, go to sleep' in query):
             wishme_end()
