@@ -31,13 +31,13 @@ engine.setProperty('voice', voices[0].id)
 engine.setProperty('volume', MAX_VOLUME)
 
 
-def voice_change(voice_index) -> None:
+def voice_change(voice_index: int) -> None:
     """Change the voice of the text-to-speech engine."""
     engine.setProperty('voice', voices[voice_index].id)
     speak("Voice has been changed sir")
 
 
-def speak(audio) -> None:
+def speak(audio: str) -> None:
     """Speak the given audio string."""
     engine.say(audio)
     engine.runAndWait()
@@ -61,7 +61,7 @@ def get_date() -> None:
     speak(current_year)
 
 
-def check_time(time_of_day) -> None:
+def check_time(time_of_day: str) -> None:
     """Check the time of day and greet accordingly."""
     hour = datetime.datetime.now().hour
     if ("morning" in time_of_day):
@@ -83,8 +83,8 @@ def check_time(time_of_day) -> None:
             elif (hour >= 18 and hour < 24):
                 speak("it's Good Evening sir")
             else:
-                speak("it's Goodnight sir, dont go to bed, late, sir it"\
-                      "affects your daily sleep cycle, causing daily"\
+                speak("it's Goodnight sir, dont go to bed, late, sir it"
+                      "affects your daily sleep cycle, causing daily"
                       "mood swings, with stress and anxiety")
     else:
         speak("it's night sir!, you should probably get some sleep")
@@ -103,13 +103,13 @@ def wish_me() -> None:
     else:
         speak("Goodnight sir")
 
-    speak("I have indeed been uploaded , i am online and ready sir, How can"\
+    speak("I have indeed been uploaded , i am online and ready sir, How can"
           "i help you today?")
 
 
 def wish_me_end() -> None:
     """Greet the user and shut down the assistant."""
-    speak("alright i am going to sleep now sir, wake me up if you need"\
+    speak("alright i am going to sleep now sir, wake me up if you need"
           "anything")
     hour = datetime.datetime.now().hour
     if (hour >= 6 and hour < 12):
@@ -137,7 +137,7 @@ def take_command() -> str:
         user_command = recognizer.recognize_google(audio, language='en-in')
     except Exception as e:
         print(e)
-        speak("sir, i am having difficulty hearing you, can you please speak"\
+        speak("sir, i am having difficulty hearing you, can you please speak"
               "up?...")
 
         return "None"
@@ -145,7 +145,7 @@ def take_command() -> str:
     return user_command
 
 
-def send_email(to, content) -> None:
+def send_email(to: str, content: str) -> None:
     """Send an email to the specified address with the given content."""
     server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
     server.ehlo()
@@ -165,18 +165,18 @@ def get_cpu() -> None:
     """Get and speak the current CPU usage and battery status."""
     usage = str(psutil.cpu_percent())
     speak('current CPU status of your system is ' + usage +
-          "sir, dont let too many unnecessary background processes run at"\
-          "the same time, for the system to perform operation smoothly, and"\
+          "sir, dont let too many unnecessary background processes run at"
+          "the same time, for the system to perform operation smoothly, and"
           "you can work efficiently on this system")
     print('current CPU status of your system is ' + usage +
-          "sir, dont let too many unnecessary background processes run at"\
-          "the same time, for the system to perform operation smoothly, and"\
+          "sir, dont let too many unnecessary background processes run at"
+          "the same time, for the system to perform operation smoothly, and"
           "you can work efficiently on this system")
     battery = psutil.sensors_battery()
     speak("Your battery usage currently is at")
     speak(battery.percent)
     print("Your system is running at:" + str(battery.percent) +
-          " battery power, sir. always provide regular power supply to the"\
+          " battery power, sir. always provide regular power supply to the"
           "system")
 
 
@@ -211,28 +211,28 @@ def get_weather() -> None:
         print(weather_report)
         speak(weather_report)
     else:
-        speak(" the city you are refering to, was not Found in our database"\
+        speak(" the city you are refering to, was not Found in our database"
               "sir")
 
 
 def tell_about_self() -> None:
     """Provide information about the assistant."""
     speak(
-        " Hello, I am Cypher, version 1.8.7, I am a basic design of voice"\
-        "assistant, a program without any form or physical presence, i only"\
-        "exist in the lines of code, I was designed and developed, on 19"\
-        "September 2022, by using a programming language called python with"\
-        "the help of many imported modules, on a device named Dell Inspiron"\
-        "15, with microsoft windows 64 bit operating system, consisting of"\
-        "8 Giga bytes of Random access memory, intel core i 5 tenth"\
-        "generation processor, 4 gigabytes n vidia m x two thirty of"\
-        "graphics memory, and 2 gigabytes of intel integrated graphics, i"\
-        "have a network database running in background for your service at"\
-        "all time, as you can ask me anything, anytime, i will provide you"\
+        " Hello, I am Cypher, version 1.8.7, I am a basic design of voice"
+        "assistant, a program without any form or physical presence, i only"
+        "exist in the lines of code, I was designed and developed, on 19"
+        "September 2022, by using a programming language called python with"
+        "the help of many imported modules, on a device named Dell Inspiron"
+        "15, with microsoft windows 64 bit operating system, consisting of"
+        "8 Giga bytes of Random access memory, intel core i 5 tenth"
+        "generation processor, 4 gigabytes n vidia m x two thirty of"
+        "graphics memory, and 2 gigabytes of intel integrated graphics, i"
+        "have a network database running in background for your service at"
+        "all time, as you can ask me anything, anytime, i will provide you"
         "with the information you are looking for."
     )
-    speak("Now i hope you know me well, i hope i will be of some help to you"\
-          "in the future. Just take my name and i will be powered up and"\
+    speak("Now i hope you know me well, i hope i will be of some help to you"
+          "in the future. Just take my name and i will be powered up and"
           "ready for you sir")
 
 
@@ -285,9 +285,8 @@ if __name__ == "__main__":
                 speak("sir, your Email has been sent")
             except Exception as e:
                 print(e)
-                speak(
-                    "Unable to send email sir, check whether the address of"\
-                    "the recipient is correct")
+                speak("Unable to send email sir, check whether the address of"                   
+                      "the recipient is correct")
         elif ("search on google" in query or "open website" in query):
             speak("What would you like me to search on the web, sir?")
             chromepath = ('C:/ProgramData/Microsoft/Windows/Start Menu/'
@@ -323,7 +322,7 @@ if __name__ == "__main__":
 
         elif ("screenshot" in query):
             take_screenshot()
-            speak("i have captured and saved, what was on your screen sir"\
+            speak("i have captured and saved, what was on your screen sir"
                   "right now")
 
         elif ("cpu and battery" in query or "battery" in query
@@ -337,26 +336,28 @@ if __name__ == "__main__":
             get_weather()
 
         elif ("tell me your features" in query or "powers" in query
-             or "features" in query):
-            features = (
-            "I can help you with many things, such as:\n"
-            "- Telling you the current time and date.\n"
-            "- Providing weather updates for any city across the globe.\n"
-            "- Showing the current CPU and battery usage.\n"
-            "- Creating reminders, so you don't miss important tasks, "
-            "meetings, or events.\n"
-            "- Capturing and saving a screenshot of your screen.\n"
-            "- Lightening your mood with a joke, although I can't guarantee "
-            "you'll laugh.\n"
-            "- Sending emails for you to your boss, family, or friends "
-            "while you're busy.\n"
-            "- Shutting down, logging out, or putting your system to sleep.\n"
-            "- Opening websites for you.\n"
-            "- Searching information on Wikipedia.\n"
-            "- Changing my voice from male to female and vice versa.\n"
-            "- My developer is working on adding more features.\n"
-            "Now tell me, what can I do for you?"
-            )
+              or "features" in query):
+            features = ("I can help you with many things, such as:\n"
+                        "- Telling you the current time and date.\n"
+                        "- Providing weather updates for any citya cross the"
+                        "globe.\n"
+                        "- Showing the current CPU and battery usage.\n"
+                        "- Creating reminders, so you don't miss important"
+                        "tasks, meetings, or events.\n"
+                        "- Capturing and saving a screen of your screen.\n"
+                        "- Lightening your mood with a joke, although I can't"
+                        "guarantee you'll laugh.\n"
+                        "- Sending emails for you to your boss, family, or"
+                        " friends while you're busy.\n"
+                        "- Shutting down, logging out, or putting your "
+                        "system to sleep.\n"
+                        "- Opening websites for you.\n"
+                        "- Searching information on Wikipedia.\n"
+                        "- Changing my voice from male to female and vice "
+                        "versa.\n"
+                        "- My developer is working on adding more features.\n"
+                        "Now tell me, what can I do for you?"
+                        )
             print(features)
             speak(features)
 
