@@ -1,46 +1,80 @@
 import json
 import hashlib
-from typing import List
-
-"""
-В этом модуле обитают функции, необходимые для автоматизированной проверки результатов ваших трудов.
-"""
-
+import csv
+import re
+from constants import VAR, CSV_PATH, JSON_PATH, REGULARS
+from typing import List, Dict
 
 def calculate_checksum(row_numbers: List[int]) -> str:
     """
-    Вычисляет md5 хеш от списка целочисленных значений.
+    Вычисляет MD5 хэш от списка целочисленных значений.
 
-    ВНИМАНИЕ, ВАЖНО! Чтобы сумма получилась корректной, считать, что первая строка с данными csv-файла имеет номер 0
-    Другими словами: В исходном csv 1я строка - заголовки столбцов, 2я и остальные - данные.
-    Соответственно, считаем что у 2 строки файла номер 0, у 3й - номер 1 и так далее.
-
-    Надеюсь, я расписал это максимально подробно.
-    Хотя что-то мне подсказывает, что обязательно найдется человек, у которого с этим возникнут проблемы.
-    Которому я отвечу, что все написано в докстринге ¯\_(ツ)_/¯
-
-    :param row_numbers: список целочисленных номеров строк csv-файла, на которых были найдены ошибки валидации
-    :return: md5 хеш для проверки через github action
+    :param row_numbers: Список индексов строк, содержащих ошибки валидации.
+    :return: MD5 хэш в виде строки.
     """
     row_numbers.sort()
     return hashlib.md5(json.dumps(row_numbers).encode('utf-8')).hexdigest()
 
-
-def serialize_result(variant: int, checksum: str) -> None:
+def serialize_result(variant: str, checksum: str) -> None:
     """
-    Метод для сериализации результатов лабораторной пишите сами.
-    Вам нужно заполнить данными - номером варианта и контрольной суммой - файл, лежащий в папке с лабораторной.
-    Файл называется, очевидно, result.json.
+    Сериализует результат проверки в JSON-файл.
 
-    ВНИМАНИЕ, ВАЖНО! На json натравлен github action, который проверяет корректность выполнения лабораторной.
-    Так что не перемещайте, не переименовывайте и не изменяйте его структуру, если планируете успешно сдать лабу.
-
-    :param variant: номер вашего варианта
-    :param checksum: контрольная сумма, вычисленная через calculate_checksum()
+    :param variant: Номер варианта лабораторной работы.
+    :param checksum: Вычисленная контрольная сумма.
     """
-    pass
+    result = {
+        "variant": variant,
+        "checksum": checksum
+    }
+    with open(JSON_PATH, 'w', encoding='utf-8') as file:
+        json.dump(result, file, indent=4)
 
+def read_csv(file_path: str) -> List[Dict[str, str]]:
+    """
+    Читает CSV файл и возвращает его содержимое в виде списка словарей.
+
+    :param file_path: Путь к файлу CSV.
+    :return: Список словарей, где ключи - это имена столбцов, а значения - данные строк.
+    """
+    data = []
+    with open(file_path, 'r', encoding='utf-16') as file:
+        reader = csv.DictReader(file, delimiter=';')
+        for row in reader:
+            data.append(row)
+    return data
+
+def validate_data(data: List[Dict[str, str]], regulars: Dict[str, str]) -> List[bool]:
+    """
+    Проверяет каждую строку данных на соответствие регулярным выражениям.
+
+    :param data: Список словарей, представляющих строки данных.
+    :param regulars: Словарь регулярных выражений для проверки.
+    :return: Список булевых значений, где True означает валидность строки.
+    """
+    validated_data = []
+    for row in data:
+        is_valid = True
+        for key, pattern in regulars.items():
+            if key in row and not re.match(pattern, row[key].strip('"')):
+                is_valid = False
+                break
+        validated_data.append(is_valid)
+    return validated_data
+
+def get_invalid_rows(data: List[Dict[str, str]], regulars: Dict[str, str]) -> List[int]:
+    """
+    Возвращает индексы строк, которые не прошли проверку.
+
+    :param data: Список словарей, представляющих строки данных.
+    :param regulars: Словарь регулярных выражений для проверки.
+    :return: Список индексов невалидных строк.
+    """
+    validated_data = validate_data(data, regulars)
+    invalid_rows = [index for index, is_valid in enumerate(validated_data) if not is_valid]
+    return invalid_rows
 
 if __name__ == "__main__":
-    print(calculate_checksum([1, 2, 3]))
-    print(calculate_checksum([3, 2, 1]))
+    data = read_csv(CSV_PATH)
+    invalid_indices = get_invalid_rows(data, REGULARS)
+    checksum = calculate_checksum(invalid_indices)
+    serialize_result(VAR, checksum)
