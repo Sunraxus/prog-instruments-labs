@@ -1,0 +1,21 @@
+2024-12-10 17:24:09,INFO,Game initialized: moves_left=7, puzzle_stage=1
+2024-12-10 17:24:09,INFO,Game started
+2024-12-10 17:24:09,INFO,Current state: puzzle_stage=1, moves_left=7
+2024-12-10 17:24:23,INFO,Puzzle 1 solved correctly
+2024-12-10 17:24:23,INFO,Current state: puzzle_stage=2, moves_left=6
+2024-12-10 17:24:33,INFO,Puzzle 2 solved correctly
+2024-12-10 17:24:33,INFO,Current state: puzzle_stage=3, moves_left=5
+2024-12-10 17:26:45,INFO,Puzzle 3 solved correctly
+2024-12-10 17:26:45,INFO,Current state: puzzle_stage=4, moves_left=4
+2024-12-10 17:27:53,WARNING,Puzzle 4 failed: wrong door chosen (1)
+2024-12-10 17:27:53,INFO,Game ended: puzzle_stage=4, moves_left=2
+2024-12-10 17:28:00,INFO,Player chose to play again
+2024-12-10 17:28:00,INFO,Game initialized: moves_left=7, puzzle_stage=1
+2024-12-10 17:28:00,INFO,Game started
+2024-12-10 17:28:00,INFO,Current state: puzzle_stage=1, moves_left=7
+2024-12-10 17:28:02,INFO,Puzzle 1 solved correctly
+2024-12-10 17:28:02,INFO,Current state: puzzle_stage=2, moves_left=6
+2024-12-10 17:28:06,WARNING,Puzzle 2 failed: incorrect answer (py)
+2024-12-10 17:28:06,INFO,Game ended: puzzle_stage=2, moves_left=4
+2024-12-10 17:28:07,INFO,Player chose to quit the game
+2024-12-10 17:28:07,INFO,Game session ended
